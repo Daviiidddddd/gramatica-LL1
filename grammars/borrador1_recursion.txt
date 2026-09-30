@@ -1,0 +1,13 @@
+# Primer borrador: escribí la gramática como se lee en matemáticas.
+# Tiene recursión izquierda en expr y en term, así que NO sirve para un ASDR.
+
+prog     -> sents
+sents    -> sent sents | ε
+sent     -> ID asig expr fin
+
+expr     -> expr mas term | expr menos term | term
+term     -> term por fact | term entre fact | term modulo fact | fact
+
+fact     -> menos fact | unidad
+unidad   -> NUM | ID | abre expr cierra | barra expr barra | func abre expr cierra
+func     -> abs | sin | cos | tan

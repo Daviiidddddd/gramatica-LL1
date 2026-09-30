@@ -1,0 +1,84 @@
+================================================================
+ Gramática: lenguaje.txt
+================================================================
+Símbolo inicial : prog
+No terminales   : prog, sents, sent, expr, expr_r, term, term_r, fact, unidad, func
+Terminales      : ID, asig, fin, mas, menos, por, entre, modulo, NUM, abre, cierra, barra, abs, sin, cos, tan
+
+REGLAS
+   1. prog → sents
+   2. sents → sent sents
+   3. sents → ε
+   4. sent → ID asig expr fin
+   5. expr → term expr_r
+   6. expr_r → mas term expr_r
+   7. expr_r → menos term expr_r
+   8. expr_r → ε
+   9. term → fact term_r
+  10. term_r → por fact term_r
+  11. term_r → entre fact term_r
+  12. term_r → modulo fact term_r
+  13. term_r → ε
+  14. fact → menos fact
+  15. fact → unidad
+  16. unidad → NUM
+  17. unidad → ID
+  18. unidad → abre expr cierra
+  19. unidad → barra expr barra
+  20. unidad → func abre expr cierra
+  21. func → abs
+  22. func → sin
+  23. func → cos
+  24. func → tan
+
+PRIMEROS
+  PRIMEROS(prog)   = { ID, ε }
+  PRIMEROS(sents)  = { ID, ε }
+  PRIMEROS(sent)   = { ID }
+  PRIMEROS(expr)   = { ID, menos, NUM, abre, barra, abs, sin, cos, tan }
+  PRIMEROS(expr_r) = { mas, menos, ε }
+  PRIMEROS(term)   = { ID, menos, NUM, abre, barra, abs, sin, cos, tan }
+  PRIMEROS(term_r) = { por, entre, modulo, ε }
+  PRIMEROS(fact)   = { ID, menos, NUM, abre, barra, abs, sin, cos, tan }
+  PRIMEROS(unidad) = { ID, NUM, abre, barra, abs, sin, cos, tan }
+  PRIMEROS(func)   = { abs, sin, cos, tan }
+
+SIGUIENTES
+  SIGUIENTES(prog)   = { $ }
+  SIGUIENTES(sents)  = { $ }
+  SIGUIENTES(sent)   = { ID, $ }
+  SIGUIENTES(expr)   = { fin, cierra, barra }
+  SIGUIENTES(expr_r) = { fin, cierra, barra }
+  SIGUIENTES(term)   = { fin, mas, menos, cierra, barra }
+  SIGUIENTES(term_r) = { fin, mas, menos, cierra, barra }
+  SIGUIENTES(fact)   = { fin, mas, menos, por, entre, modulo, cierra, barra }
+  SIGUIENTES(unidad) = { fin, mas, menos, por, entre, modulo, cierra, barra }
+  SIGUIENTES(func)   = { abre }
+
+PREDICCIÓN
+   1. prog → sents                     { ID, $ }
+   2. sents → sent sents               { ID }
+   3. sents → ε                        { $ }
+   4. sent → ID asig expr fin          { ID }
+   5. expr → term expr_r               { ID, menos, NUM, abre, barra, abs, sin, cos, tan }
+   6. expr_r → mas term expr_r         { mas }
+   7. expr_r → menos term expr_r       { menos }
+   8. expr_r → ε                       { fin, cierra, barra }
+   9. term → fact term_r               { ID, menos, NUM, abre, barra, abs, sin, cos, tan }
+  10. term_r → por fact term_r         { por }
+  11. term_r → entre fact term_r       { entre }
+  12. term_r → modulo fact term_r      { modulo }
+  13. term_r → ε                       { fin, mas, menos, cierra, barra }
+  14. fact → menos fact                { menos }
+  15. fact → unidad                    { ID, NUM, abre, barra, abs, sin, cos, tan }
+  16. unidad → NUM                     { NUM }
+  17. unidad → ID                      { ID }
+  18. unidad → abre expr cierra        { abre }
+  19. unidad → barra expr barra        { barra }
+  20. unidad → func abre expr cierra   { abs, sin, cos, tan }
+  21. func → abs                       { abs }
+  22. func → sin                       { sin }
+  23. func → cos                       { cos }
+  24. func → tan                       { tan }
+
+¿ES LL(1)? SÍ: las reglas de cada no terminal tienen predicciones disjuntas.

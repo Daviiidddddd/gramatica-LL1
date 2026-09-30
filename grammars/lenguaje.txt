@@ -1,0 +1,23 @@
+# Gramática LL(1) del lenguaje
+# Los no terminales son los símbolos de la izquierda; el resto son terminales.
+# Los terminales en MAYÚSCULA son clases de token que entrega el analizador léxico.
+
+prog     -> sents
+sents    -> sent sents | ε
+sent     -> ID asig expr fin
+
+expr     -> term expr_r
+expr_r   -> mas term expr_r | menos term expr_r | ε
+
+term     -> fact term_r
+term_r   -> por fact term_r | entre fact term_r | modulo fact term_r | ε
+
+fact     -> menos fact | unidad
+
+unidad   -> NUM
+unidad   -> ID
+unidad   -> abre expr cierra
+unidad   -> barra expr barra
+unidad   -> func abre expr cierra
+
+func     -> abs | sin | cos | tan

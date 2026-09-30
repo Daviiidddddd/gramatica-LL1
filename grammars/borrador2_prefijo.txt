@@ -1,0 +1,13 @@
+# Segundo borrador: quité la recursión izquierda pasándola a la derecha,
+# pero las alternativas de expr y term quedaron con prefijo común (term y fact).
+
+prog     -> sents
+sents    -> sent sents | ε
+sent     -> ID asig expr fin
+
+expr     -> term mas expr | term menos expr | term
+term     -> fact por term | fact entre term | fact modulo term | fact
+
+fact     -> menos fact | unidad
+unidad   -> NUM | ID | abre expr cierra | barra expr barra | func abre expr cierra
+func     -> abs | sin | cos | tan
